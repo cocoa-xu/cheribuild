@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -x
+set -xe
 
 GIT_COMMIT=$1
 ARCHITECTURE=$2
