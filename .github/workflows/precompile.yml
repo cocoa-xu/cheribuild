@@ -185,10 +185,12 @@ jobs:
     
       - name: Install dependencies
         run: |
+          export PATH="/opt/homebrew/bin:$PATH"
           brew install cmake ninja libarchive git glib gnu-sed automake autoconf coreutils llvm make wget pixman pkg-config xz texinfo mercurial
 
       - name: Compile SDK and Morello SDK
         run: |
+          export PATH="/opt/homebrew/bin:$PATH"
           ROOT_DIR="$(pwd)"
           BUILD_DIR="${ROOT_DIR}/build"
           rm -rf "${BUILD_DIR}"
