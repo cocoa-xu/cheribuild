@@ -4,6 +4,8 @@ set -xe
 
 GIT_COMMIT=$1
 ARCHITECTURE=$2
+TARGETS=$3
+HOST_TRIPLET=$4
 
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
@@ -18,4 +20,4 @@ chmod a+rw /work/build
 adduser --disabled-password --gecos "" cheribuild
 cp /work/stage3.sh /home/cheribuild/stage3.sh
 chmod a+x /home/cheribuild/stage3.sh
-sudo -u cheribuild bash -c "cd /home/cheribuild && ./stage3.sh ${GIT_COMMIT} ${ARCHITECTURE}"
+sudo -u cheribuild bash -c "cd /home/cheribuild && ./stage3.sh ${GIT_COMMIT} ${ARCHITECTURE} ${TARGETS} ${HOST_TRIPLET}"
