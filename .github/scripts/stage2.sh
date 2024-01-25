@@ -5,6 +5,7 @@ set -x
 GIT_COMMIT=$1
 ARCHITECTURE=$2
 
+export DEBIAN_FRONTEND=noninteractive
 apt-get update
 apt-get install -y sudo git autoconf automake libtool pkg-config clang bison cmake flex \
   mercurial ninja-build samba texinfo time libglib2.0-dev libpixman-1-dev libgmp-dev \
