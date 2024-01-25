@@ -50,4 +50,4 @@ jobs:
         env:
           DEPLOY_CHERIBSD_HOOK_URL: ${{ secrets.DEPLOY_CHERIBSD_HOOK_URL }}
         run: |
-          curl -sS --max-time=3600 --no-progress-meter "${DEPLOY_CHERIBSD_HOOK_URL}arch=${{ matrix.arch }}&version=${{ github.ref_name }}"
+          curl -sS --max-time 1200 --no-progress-meter "${DEPLOY_CHERIBSD_HOOK_URL}arch=${{ matrix.arch }}&version=${{ github.ref_name }}"

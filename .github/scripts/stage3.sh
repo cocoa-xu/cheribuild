@@ -34,4 +34,6 @@ sha256sum cheribsd-minimal-morello-${ARCHITECTURE}.img.xz | tee cheribsd-minimal
 sha256sum sdk-${ARCHITECTURE}.tar.xz | tee sdk-${ARCHITECTURE}.tar.xz.sha256
 sha256sum morello-sdk-${ARCHITECTURE}.tar.xz | tee morello-sdk-${ARCHITECTURE}.tar.xz.sha256
 
+ls -lah /work/build/
+
 rm -rf "${HOME}/cheri/"
