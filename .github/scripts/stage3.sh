@@ -9,8 +9,13 @@ git clone --depth=1 https://github.com/CTSRD-CHERI/cheribuild.git "$HOME/cheribu
 cd "$HOME/cheribuild"
 git checkout "$GIT_COMMIT"
 
-python3 ./cheribuild.py "cheribsd-sdk-morello-${ARCHITECTURE}" -f
-python3 ./cheribuild.py "disk-image-minimal-morello-${ARCHITECTURE}" -f
+if [ "${ARCHITECTURE}" = "hybrid" ]; then
+    python3 ./cheribuild.py --enable-hybrid-targets "cheribsd-sdk-morello-${ARCHITECTURE}" -f 
+    python3 ./cheribuild.py --enable-hybrid-targets "disk-image-minimal-morello-${ARCHITECTURE}" -f
+else
+    python3 ./cheribuild.py "cheribsd-sdk-morello-${ARCHITECTURE}" -f 
+    python3 ./cheribuild.py "disk-image-minimal-morello-${ARCHITECTURE}" -f
+fi
 
 xz -z -e -T0 "${HOME}/cheri/output/cheribsd-minimal-morello-${ARCHITECTURE}.img"
 rm -f "${HOME}/cheri/output/cheribsd-minimal-morello-${ARCHITECTURE}.img"
