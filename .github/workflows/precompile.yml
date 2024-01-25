@@ -115,7 +115,7 @@ jobs:
     
       - name: Install dependencies
         run: |
-          brew install cmake ninja libarchive git glib gnu-sed automake autoconf coreutils llvm make wget pixman pkg-config xz texinfo mercurial libtool
+          brew install cmake ninja libarchive git glib gnu-sed automake autoconf coreutils llvm make wget pixman pkg-config xz texinfo mercurial libtool samba socat dtc
 
       - name: Compile SDK and Morello SDK
         run: |
@@ -186,7 +186,7 @@ jobs:
       - name: Install dependencies
         run: |
           export PATH="/opt/homebrew/bin:$PATH"
-          brew install cmake ninja libarchive git glib gnu-sed automake autoconf coreutils llvm make wget pixman pkg-config xz texinfo mercurial libtool
+          brew install cmake ninja libarchive git glib gnu-sed automake autoconf coreutils llvm make wget pixman pkg-config xz texinfo mercurial libtool samba socat dtc
 
       - name: Compile SDK and Morello SDK
         run: |
