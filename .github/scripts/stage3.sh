@@ -17,14 +17,16 @@ else
     python3 ./cheribuild.py "disk-image-minimal-morello-${ARCHITECTURE}" -f
 fi
 
-xz -z -e -T0 "${HOME}/cheri/output/cheribsd-minimal-morello-${ARCHITECTURE}.img"
+export XZ_OPT="-e -T0 -9"
+
+xz -z -e -T0 -9 "${HOME}/cheri/output/cheribsd-minimal-morello-${ARCHITECTURE}.img"
 rm -f "${HOME}/cheri/output/cheribsd-minimal-morello-${ARCHITECTURE}.img"
 mv "${HOME}/cheri/output/cheribsd-minimal-morello-${ARCHITECTURE}.img.xz" /work/build/
 
-tar -C "${HOME}/cheri/output" -cJf "$(pwd)/sdk-${ARCHITECTURE}.tar.xz" --options='-e -T0' sdk
+tar -C "${HOME}/cheri/output" -cJf "$(pwd)/sdk-${ARCHITECTURE}.tar.xz" sdk
 mv "$(pwd)/sdk-${ARCHITECTURE}.tar.xz" /work/build/
 
-tar -C "${HOME}/cheri/output" -cJf "$(pwd)/morello-sdk-${ARCHITECTURE}.tar.xz" --options='-e -T0' morello-sdk
+tar -C "${HOME}/cheri/output" -cJf "$(pwd)/morello-sdk-${ARCHITECTURE}.tar.xz" morello-sdk
 mv "$(pwd)/morello-sdk-${ARCHITECTURE}.tar.xz" /work/build/
 
 cd /work/build
