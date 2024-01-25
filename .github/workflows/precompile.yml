@@ -115,9 +115,14 @@ jobs:
       - name: Install dependencies
         run: |
           brew install cmake ninja libarchive git glib gnu-sed automake autoconf coreutils llvm make wget pixman pkg-config xz texinfo mercurial libtool samba socat dtc
+          
           if [ -f "/usr/local/bin/python3" ]; then
+            /usr/local/bin/python3 -m ensurepip --default-pip
             /usr/local/bin/python3 -m pip install -U setuptools
           fi
+          FIRST_PYTHON3="$(which python3)"
+          ${FIRST_PYTHON3} -m ensurepip --default-pip
+          ${FIRST_PYTHON3} -m pip install -U setuptools
 
       - name: Compile SDK and Morello SDK
         run: |
@@ -189,6 +194,14 @@ jobs:
         run: |
           export PATH="/opt/homebrew/bin:$PATH"
           brew install cmake ninja libarchive git glib gnu-sed automake autoconf coreutils llvm make wget pixman pkg-config xz texinfo mercurial libtool samba socat dtc
+
+          if [ -f "/usr/local/bin/python3" ]; then
+            /usr/local/bin/python3 -m ensurepip --default-pip
+            /usr/local/bin/python3 -m pip install -U setuptools
+          fi
+          FIRST_PYTHON3="$(which python3)"
+          ${FIRST_PYTHON3} -m ensurepip --default-pip
+          ${FIRST_PYTHON3} -m pip install -U setuptools
 
       - name: Compile SDK and Morello SDK
         run: |
