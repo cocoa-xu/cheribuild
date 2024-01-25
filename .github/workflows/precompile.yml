@@ -1,0 +1,53 @@
+name: precompile
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  linux:
+    runs-on: self-hosted-x86_64-linux-gnu
+    strategy:
+      fail-fast: false
+      matrix:
+        arch:
+          - purecap
+          - hybrid
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Compile in Docker
+        run: |
+          GITHUB_REF="${{ github.ref_name }}"
+          GIT_COMMIT="${GITHUB_REF##*-}"
+          cp .github/scripts/*.sh ./
+          bash ./compile-in-docker.sh "${GIT_COMMIT}" "${{ matrix.arch }}"
+
+      - name: Upload artifacts
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            build/cheribsd-minimal-morello-${{ matrix.arch }}.img.xz
+            build/cheribsd-minimal-morello-${{ matrix.arch }}.img.xz.sha256
+            build/sdk-${{ matrix.arch }}.tar.xz
+            build/sdk-${{ matrix.arch }}.tar.xz.sha256
+            build/morello-sdk-${{ matrix.arch }}.tar.xz
+            build/morello-sdk-${{ matrix.arch }}.tar.xz.sha256
+
+      - name: Deploy
+        if: startsWith(github.ref, 'refs/tags/') && github.repository == 'cocoa-xu/cheribuild'
+        env:
+          DEPLOY_CHERIBSD_HOOK_URL: ${{ secrets.DEPLOY_CHERIBSD_HOOK_URL }}
+        run: |
+          curl -sS --max-time=3600 --no-progress-meter "${DEPLOY_CHERIBSD_HOOK_URL}arch=${{ matrix.arch }}&version=${{ github.ref_name }}"
