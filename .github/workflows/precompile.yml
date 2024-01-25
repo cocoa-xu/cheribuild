@@ -99,7 +99,6 @@ jobs:
     runs-on: macos-12
     env:
       HOST_TRIPLET: x86_64-apple-darwin
-      HOMEBREW_NO_AUTO_UPDATE: "1"
       XZ_OPT: "-e -T0 -9"
     strategy:
       fail-fast: false
@@ -116,6 +115,9 @@ jobs:
       - name: Install dependencies
         run: |
           brew install cmake ninja libarchive git glib gnu-sed automake autoconf coreutils llvm make wget pixman pkg-config xz texinfo mercurial libtool samba socat dtc
+          if [ -f "/usr/local/bin/python3" ]; then
+            /usr/local/bin/python3 -m pip install -U setuptools
+          fi
 
       - name: Compile SDK and Morello SDK
         run: |
