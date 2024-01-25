@@ -31,7 +31,7 @@ jobs:
           GITHUB_REF="${{ github.ref_name }}"
           GIT_COMMIT="${GITHUB_REF##*-}"
           cp .github/scripts/*.sh ./
-          bash ./compile-in-docker.sh "${GIT_COMMIT}" "${{ matrix.arch }}"
+          bash ./stage1.sh "${GIT_COMMIT}" "${{ matrix.arch }}"
 
       - name: Upload artifacts
         uses: softprops/action-gh-release@v1
