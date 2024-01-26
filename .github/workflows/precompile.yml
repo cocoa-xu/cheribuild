@@ -17,6 +17,7 @@ jobs:
     runs-on: self-hosted-x86_64-linux-gnu
     env:
       HOST_TRIPLET: x86_64-linux-gnu
+      DOCKER_PLATFORM: linux/amd64
     strategy:
       fail-fast: false
       matrix:
@@ -34,6 +35,7 @@ jobs:
           GITHUB_REF="${{ github.ref_name }}"
           GIT_COMMIT="${GITHUB_REF##*-}"
           cp .github/scripts/*.sh ./
+          export DOCKER_PLATFORM="${{ env.DOCKER_PLATFORM }}"
           bash ./stage1.sh "${GIT_COMMIT}" "${{ matrix.arch }}" "image+sdk" "${{ env.HOST_TRIPLET }}"
 
       - name: Upload CheriBSD system image artifacts
@@ -71,6 +73,7 @@ jobs:
     runs-on: self-hosted-aarch64-linux-gnu
     env:
       HOST_TRIPLET: aarch64-linux-gnu
+      DOCKER_PLATFORM: linux/arm64
     strategy:
       fail-fast: false
       matrix:
@@ -94,6 +97,7 @@ jobs:
           GIT_COMMIT="${GITHUB_REF##*-}"
           
           cp .github/scripts/*.sh ./
+          export DOCKER_PLATFORM="${{ env.DOCKER_PLATFORM }}"
           bash ./stage1.sh "${GIT_COMMIT}" "${{ matrix.arch }}" "sdk" "${{ env.HOST_TRIPLET }}"
 
       - name: Upload QEMU artifacts
