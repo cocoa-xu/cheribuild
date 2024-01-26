@@ -31,8 +31,10 @@ if [ "${TARGETS}" = "image+sdk" ]; then
   mv "${HOME}/cheri/output/cheribsd-morello-${ARCHITECTURE}.img.xz" /work/build/
 fi
 
-tar -C "${HOME}/cheri/output" -cJf "$(pwd)/qemu-${ARCHITECTURE}-${HOST_TRIPLET}.tar.xz" sdk
-mv "$(pwd)/qemu-${ARCHITECTURE}-${HOST_TRIPLET}.tar.xz" /work/build/
+if [ "${ARCHITECTURE}" = "purecap" ]; then
+  tar -C "${HOME}/cheri/output" -cJf "$(pwd)/qemu-${HOST_TRIPLET}.tar.xz" sdk
+  mv "$(pwd)/qemu-${HOST_TRIPLET}.tar.xz" /work/build/
+fi
 
 tar -C "${HOME}/cheri/output" -cJf "$(pwd)/morello-sdk-${ARCHITECTURE}-${HOST_TRIPLET}.tar.xz" morello-sdk
 mv "$(pwd)/morello-sdk-${ARCHITECTURE}-${HOST_TRIPLET}.tar.xz" /work/build/
@@ -41,7 +43,9 @@ cd /work/build
 if [ "${TARGETS}" = "image+sdk" ]; then
   sha256sum cheribsd-morello-${ARCHITECTURE}.img.xz | tee cheribsd-morello-${ARCHITECTURE}.img.xz.sha256
 fi
-sha256sum qemu-${ARCHITECTURE}-${HOST_TRIPLET}.tar.xz | tee qemu-${ARCHITECTURE}-${HOST_TRIPLET}.tar.xz.sha256
+if [ "${ARCHITECTURE}" = "purecap" ]; then
+  sha256sum qemu-${HOST_TRIPLET}.tar.xz | tee qemu-${HOST_TRIPLET}.tar.xz.sha256
+fi
 sha256sum morello-sdk-${ARCHITECTURE}-${HOST_TRIPLET}.tar.xz | tee morello-sdk-${ARCHITECTURE}-${HOST_TRIPLET}.tar.xz.sha256
 
 ls -lah /work/build/
