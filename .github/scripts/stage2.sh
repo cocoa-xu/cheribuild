@@ -19,5 +19,13 @@ chmod a+rw /work/build
 
 adduser --disabled-password --gecos "" cheribuild
 cp /work/stage3.sh /home/cheribuild/stage3.sh
+
+mkdir -p /home/cheribuild/.ssh
+cp /work/id_rsa /work/id_rsa.pub /home/cheribuild/.ssh
+chown -R cheribuild:cheribuild /home/cheribuild
+chmod 700 /home/cheribuild/.ssh
+chmod 600 /home/cheribuild/.ssh/id_rsa
+chmod 644 /home/cheribuild/.ssh/id_rsa.pub
+
 chmod a+x /home/cheribuild/stage3.sh
 sudo -u cheribuild bash -c "cd /home/cheribuild && ./stage3.sh ${GIT_COMMIT} ${ARCHITECTURE} ${TARGETS} ${HOST_TRIPLET}"
