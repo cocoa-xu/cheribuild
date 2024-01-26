@@ -7,7 +7,7 @@ ARCHITECTURE=$2
 TARGETS=$3
 HOST_TRIPLET=$4
 
-git clone --depth=1 https://github.com/CTSRD-CHERI/cheribuild.git "$HOME/cheribuild"
+git clone https://github.com/CTSRD-CHERI/cheribuild.git "$HOME/cheribuild"
 cd "$HOME/cheribuild"
 git checkout "$GIT_COMMIT"
 

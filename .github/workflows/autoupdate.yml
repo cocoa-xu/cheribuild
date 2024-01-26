@@ -2,6 +2,9 @@ name: auto-update
 
 on:
   workflow_dispatch:
+    inputs:
+      git_commit:
+        required: false
   schedule:
     - cron: "0 8 * * 0"
 
@@ -17,11 +20,18 @@ jobs:
       - name: Get latest version
         id: cheribuild-version
         run: |
-            git clone --depth=1 https://github.com/CTSRD-CHERI/cheribuild.git
+          if [ -n "${{ github.event.inputs.git_commit }}" ]; then
+            git clone https://github.com/CTSRD-CHERI/cheribuild.git
+            cd cheribuild
+            GIT_COMMIT="${{ github.event.inputs.git_commit }}"
+          else
+            git clone https://github.com/CTSRD-CHERI/cheribuild.git
             cd cheribuild
             GIT_COMMIT="$(git rev-parse --short HEAD)"
-            DATE="$(date +'%Y.%m.%d')"
-            echo "tag=v${DATE}-${GIT_COMMIT}" >> $GITHUB_OUTPUT
+          fi
+
+          DATE="$(git show -s --format=%cd --date=local --date=format:'%Y.%m.%d' ${GIT_COMMIT})"
+          echo "tag=v${DATE}-${GIT_COMMIT}" >> $GITHUB_OUTPUT
 
       - name: Check if tag exists
         uses: mukunku/tag-exists-action@v1.5.0

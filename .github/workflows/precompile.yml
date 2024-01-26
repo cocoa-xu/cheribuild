@@ -157,7 +157,7 @@ jobs:
           GITHUB_REF="${{ github.ref_name }}"
           GIT_COMMIT="${GITHUB_REF##*-}"
 
-          git clone --depth=1 https://github.com/CTSRD-CHERI/cheribuild.git
+          git clone https://github.com/CTSRD-CHERI/cheribuild.git
           cd cheribuild
           git checkout "$GIT_COMMIT"
 
@@ -248,7 +248,7 @@ jobs:
           GIT_COMMIT="${GITHUB_REF##*-}"
 
           rm -rf cheribuild
-          git clone --depth=1 https://github.com/CTSRD-CHERI/cheribuild.git
+          git clone https://github.com/CTSRD-CHERI/cheribuild.git
           cd cheribuild
           git checkout "$GIT_COMMIT"
 
