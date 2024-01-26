@@ -68,10 +68,9 @@ jobs:
           curl -sS --max-time 1200 --no-progress-meter "${DEPLOY_CHERIBSD_HOOK_URL}arch=${{ matrix.arch }}&version=${{ github.ref_name }}&platform=${{ env.HOST_TRIPLET }}"
 
   linux-aarch64:
-    runs-on: self-hosted-x86_64-linux-gnu
+    runs-on: self-hosted-aarch64-linux-gnu
     env:
       HOST_TRIPLET: aarch64-linux-gnu
-      DOCKER_PLATFORM: linux/arm64
     strategy:
       fail-fast: false
       matrix:
@@ -94,7 +93,6 @@ jobs:
           GITHUB_REF="${{ github.ref_name }}"
           GIT_COMMIT="${GITHUB_REF##*-}"
           
-          export DOCKER_PLATFORM="${{ env.DOCKER_PLATFORM }}"
           cp .github/scripts/*.sh ./
           bash ./stage1.sh "${GIT_COMMIT}" "${{ matrix.arch }}" "sdk" "${{ env.HOST_TRIPLET }}"
 
