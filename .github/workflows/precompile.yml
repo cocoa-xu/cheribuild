@@ -48,6 +48,8 @@ jobs:
           files: |
             build/cheribsd-morello-${{ matrix.arch }}.img.xz
             build/cheribsd-morello-${{ matrix.arch }}.img.xz.sha256
+            build/cheribsd-minimal-morello-${{ matrix.arch }}.img.xz
+            build/cheribsd-minimal-morello-${{ matrix.arch }}.img.xz.sha256
             ./cheribsd-morello-${{ matrix.arch }}-id_rsa
             ./cheribsd-morello-${{ matrix.arch }}-id_rsa.pub
 

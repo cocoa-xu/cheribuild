@@ -15,11 +15,13 @@ if [ "${ARCHITECTURE}" = "hybrid" ]; then
   python3 ./cheribuild.py --enable-hybrid-targets --shallow-clone --make-jobs "$(nproc)" "cheribsd-sdk-morello-${ARCHITECTURE}" -f 
   if [ "${TARGETS}" = "image+sdk" ]; then
     python3 ./cheribuild.py --enable-hybrid-targets --shallow-clone --make-jobs "$(nproc)" "disk-image-morello-${ARCHITECTURE}" -f
+    python3 ./cheribuild.py --enable-hybrid-targets --shallow-clone --make-jobs "$(nproc)" "disk-image-minimal-morello-${ARCHITECTURE}" -f
   fi
 else
   python3 ./cheribuild.py --shallow-clone --make-jobs "$(nproc)" "cheribsd-sdk-morello-${ARCHITECTURE}" -f 
   if [ "${TARGETS}" = "image+sdk" ]; then
     python3 ./cheribuild.py --shallow-clone --make-jobs "$(nproc)" "disk-image-morello-${ARCHITECTURE}" -f
+    python3 ./cheribuild.py --shallow-clone --make-jobs "$(nproc)" "disk-image-minimal-morello-${ARCHITECTURE}" -f
   fi
 fi
 
@@ -29,6 +31,10 @@ if [ "${TARGETS}" = "image+sdk" ]; then
   xz -z -e -T0 -9 "${HOME}/cheri/output/cheribsd-morello-${ARCHITECTURE}.img"
   rm -f "${HOME}/cheri/output/cheribsd-morello-${ARCHITECTURE}.img"
   mv "${HOME}/cheri/output/cheribsd-morello-${ARCHITECTURE}.img.xz" /work/build/
+
+  xz -z -e -T0 -9 "${HOME}/cheri/output/cheribsd-minimal-morello-${ARCHITECTURE}.img"
+  rm -f "${HOME}/cheri/output/cheribsd-minimal-morello-${ARCHITECTURE}.img"
+  mv "${HOME}/cheri/output/cheribsd-minimal-morello-${ARCHITECTURE}.img.xz" /work/build/
 fi
 
 if [ "${ARCHITECTURE}" = "purecap" ]; then
@@ -42,6 +48,7 @@ mv "$(pwd)/morello-sdk-${ARCHITECTURE}-${HOST_TRIPLET}.tar.xz" /work/build/
 cd /work/build
 if [ "${TARGETS}" = "image+sdk" ]; then
   sha256sum cheribsd-morello-${ARCHITECTURE}.img.xz | tee cheribsd-morello-${ARCHITECTURE}.img.xz.sha256
+  sha256sum cheribsd-minimal-morello-${ARCHITECTURE}.img.xz | tee cheribsd-minimal-morello-${ARCHITECTURE}.img.xz.sha256
 fi
 if [ "${ARCHITECTURE}" = "purecap" ]; then
   sha256sum qemu-${HOST_TRIPLET}.tar.xz | tee qemu-${HOST_TRIPLET}.tar.xz.sha256
