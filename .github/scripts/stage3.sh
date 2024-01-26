@@ -12,14 +12,14 @@ cd "$HOME/cheribuild"
 git checkout "$GIT_COMMIT"
 
 if [ "${ARCHITECTURE}" = "hybrid" ]; then
-  python3 ./cheribuild.py --enable-hybrid-targets --shallow-clone "cheribsd-sdk-morello-${ARCHITECTURE}" -f 
+  python3 ./cheribuild.py --enable-hybrid-targets --shallow-clone --make-jobs "$(nproc)" "cheribsd-sdk-morello-${ARCHITECTURE}" -f 
   if [ "${TARGETS}" = "image+sdk" ]; then
-    python3 ./cheribuild.py --enable-hybrid-targets --shallow-clone "disk-image-morello-${ARCHITECTURE}" -f
+    python3 ./cheribuild.py --enable-hybrid-targets --shallow-clone --make-jobs "$(nproc)" "disk-image-morello-${ARCHITECTURE}" -f
   fi
 else
-  python3 ./cheribuild.py --shallow-clone "cheribsd-sdk-morello-${ARCHITECTURE}" -f 
+  python3 ./cheribuild.py --shallow-clone --make-jobs "$(nproc)" "cheribsd-sdk-morello-${ARCHITECTURE}" -f 
   if [ "${TARGETS}" = "image+sdk" ]; then
-    python3 ./cheribuild.py --shallow-clone "disk-image-morello-${ARCHITECTURE}" -f
+    python3 ./cheribuild.py --shallow-clone --make-jobs "$(nproc)" "disk-image-morello-${ARCHITECTURE}" -f
   fi
 fi
 
