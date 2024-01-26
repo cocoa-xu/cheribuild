@@ -164,9 +164,9 @@ jobs:
           git checkout "$GIT_COMMIT"
 
           if [ "${{ matrix.arch }}" = "hybrid" ]; then
-            python3 ./cheribuild.py --enable-hybrid-targets --shallow-clone "cheribsd-sdk-morello-${{ matrix.arch }}" -f
+            python3 ./cheribuild.py --enable-hybrid-targets --shallow-clone --make-jobs "$(sysctl -n hw.ncpu)" "cheribsd-sdk-morello-${{ matrix.arch }}" -f
           else
-            python3 ./cheribuild.py --shallow-clone "cheribsd-sdk-morello-${{ matrix.arch }}" -f
+            python3 ./cheribuild.py --shallow-clone --make-jobs "$(sysctl -n hw.ncpu)" "cheribsd-sdk-morello-${{ matrix.arch }}" -f
           fi
 
           if [ "${{ matrix.arch }}" = "purecap" ]; then
@@ -255,9 +255,9 @@ jobs:
           git checkout "$GIT_COMMIT"
 
           if [ "${{ matrix.arch }}" = "hybrid" ]; then
-            python3 ./cheribuild.py --enable-hybrid-targets --shallow-clone "cheribsd-sdk-morello-${{ matrix.arch }}" -f
+            python3 ./cheribuild.py --enable-hybrid-targets --shallow-clone --make-jobs "$(sysctl -n hw.ncpu)" "cheribsd-sdk-morello-${{ matrix.arch }}" -f
           else
-            python3 ./cheribuild.py --shallow-clone "cheribsd-sdk-morello-${{ matrix.arch }}" -f
+            python3 ./cheribuild.py --shallow-clone --make-jobs "$(sysctl -n hw.ncpu)" "cheribsd-sdk-morello-${{ matrix.arch }}" -f
           fi
 
           if [ "${{ matrix.arch }}" = "purecap" ]; then
