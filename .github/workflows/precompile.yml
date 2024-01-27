@@ -131,7 +131,7 @@ jobs:
           curl -sS --max-time 1200 --no-progress-meter "${DEPLOY_CHERIBSD_HOOK_URL}arch=${{ matrix.arch }}&version=${{ github.ref_name }}&platform=${{ env.HOST_TRIPLET }}"
 
   macos-x86_64:
-    runs-on: macos-12
+    runs-on: self-hosted-x86_64-apple-darwin
     env:
       HOST_TRIPLET: x86_64-apple-darwin
       XZ_OPT: "-e -T0 -9"
@@ -168,6 +168,7 @@ jobs:
           GITHUB_REF="${{ github.ref_name }}"
           GIT_COMMIT="${GITHUB_REF##*-}"
 
+          rm -rf cheribuild
           git clone https://github.com/CTSRD-CHERI/cheribuild.git
           cd cheribuild
           git checkout "$GIT_COMMIT"
@@ -193,6 +194,7 @@ jobs:
           sha256sum morello-sdk-${{ matrix.arch }}-${{ env.HOST_TRIPLET }}.tar.xz | tee morello-sdk-${{ matrix.arch }}-${{ env.HOST_TRIPLET }}.tar.xz.sha256
 
           ls -lah "${BUILD_DIR}"
+          rm -rf "${HOME}/cheri/"
 
       - name: Upload QEMU artifacts
         uses: softprops/action-gh-release@v1
