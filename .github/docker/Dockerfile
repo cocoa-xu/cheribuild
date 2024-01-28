@@ -24,7 +24,7 @@ RUN apt-get update -q=2 && \
     locale-gen && \    
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
-    curl -fSL "https://github.com/cocoa-xu/cheribuild/releases/download/${version}/qemu-x86_64-linux-gnu.tar.xz" -o "qemu-${host_architecture}.tar.xz" && \
+    curl -fSL "https://github.com/cocoa-xu/cheribuild/releases/download/${version}/qemu-${host_architecture}.tar.xz" -o "qemu-${host_architecture}.tar.xz" && \
     tar -xf "qemu-${host_architecture}.tar.xz" -C /usr/local --strip-components=1 && \
     rm -f "qemu-${host_architecture}.tar.xz" && \
     cd /usr/local && \
