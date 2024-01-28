@@ -1,6 +1,6 @@
 <?php
   $auth = $_GET['auth'];
-  if (!hash_equals($auth, getenv('DEPLOY_CHERIBUILD_AUTH'))) {
+  if (!hash_equals(getenv('DEPLOY_CHERIBUILD_AUTH'), $auth)) {
     header('HTTP/1.0 403 Forbidden');
     echo "[!] Invalid auth\n";
     die;
