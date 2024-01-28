@@ -15,7 +15,7 @@ RUN apt-get update -q=2 && \
         --no-install-recommends --no-install-suggests \
         curl locales ca-certificates xz-utils \
         libncursesw6 libpixman-1-0 libglib2.0-0 libtinfo6 libbz2-1.0 \
-        libmount1 libselinux1 libffi8 libpcre2-dev libblkid1 && \
+        libmount1 libselinux1 libffi8 libpcre2-dev libblkid1 \
         libffi8 libpcre2-dev libblkid1 && \
     dpkg-reconfigure --frontend=noninteractive locales && \
     update-locale && \
