@@ -310,3 +310,34 @@ jobs:
           DEPLOY_CHERIBSD_HOOK_URL: ${{ secrets.DEPLOY_CHERIBSD_HOOK_URL }}
         run: |
           curl -sS --max-time 1200 --no-progress-meter "${DEPLOY_CHERIBSD_HOOK_URL}arch=${{ matrix.arch }}&version=${{ github.ref_name }}&platform=${{ env.HOST_TRIPLET }}"
+
+  docker-image:
+    runs-on: ubuntu-latest
+    name: Create and Push Docker Images
+    needs: linux-x86_64
+    strategy:
+      fail-fast: false
+      matrix:
+        arch:
+          - purecap
+          - hybrid
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .github/docker
+          file: .github/docker/Dockerfile
+          push: true
+          tags: cocoaxu/cheribsd-${{ matrix.arch }}:latest,cocoaxu/cheribsd-${{ matrix.arch }}:${{ github.ref_name }}
+          build-args: |
+            arch=${{ matrix.arch }}
+            version=${{ github.ref_name }}

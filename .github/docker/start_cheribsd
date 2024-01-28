@@ -1,0 +1,19 @@
+#!/bin/sh
+
+set -e
+
+NCPUS=${1:-$(nproc)}
+MEMORY=${2:-512}
+
+/usr/local/bin/qemu-system-morello \
+    -M virt,gic-version=3 \
+    -cpu morello \
+    -smp "${NCPUS}" \
+    -bios edk2-aarch64-code.fd \
+    -m "${MEMORY}" \
+    -nographic \
+    -drive if=none,file="/cheribsd-minimal-morello-purecap.img",id=drv,format=raw \
+    -device virtio-blk-pci,drive=drv \
+    -device virtio-net-pci,netdev=net0 \
+    -netdev 'user,id=net0,hostfwd=tcp::2222-:22' \
+    -device virtio-rng-pci
