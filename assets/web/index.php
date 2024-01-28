@@ -125,14 +125,16 @@
                                     <div class="space-y-4 flex items-center sm:space-y-0 sm:space-x-10">
                                         <div class="flex items-center">
                                             <input id="arch-purecap" name="arch" type="radio" value="purecap" checked
-                                                class="focus:ring-indigo-500 h-4 w-5 text-indigo-600 border-gray-300">
+                                                class="focus:ring-indigo-500 h-4 w-5 text-indigo-600 border-gray-300"
+                                                onclick="onArchitectureClicked();">
                                             <label for="arch-purecap"
                                                 class="ml-3 block text-sm font-medium text-gray-700">purecap</label>
                                         </div>
 
                                         <div class="flex items-center">
                                             <input id="arch-hybrid" name="arch" type="radio" value="hybrid"
-                                                class="focus:ring-indigo-500 h-4 w-5 text-indigo-600 border-gray-300">
+                                                class="focus:ring-indigo-500 h-4 w-5 text-indigo-600 border-gray-300"
+                                                onclick="onArchitectureClicked();">
                                             <label for="arch-hybrid"
                                                 class="ml-3 block text-sm font-medium text-gray-700">hybrid</label>
                                         </div>
@@ -149,14 +151,16 @@
                                     <div class="space-y-4 flex items-center sm:space-y-0 sm:space-x-10">
                                         <div class="flex items-center">
                                             <input id="disk-image-normal" name="disk-image" type="radio" value="normal" checked
-                                                class="focus:ring-indigo-500 h-4 w-5 text-indigo-600 border-gray-300">
+                                                class="focus:ring-indigo-500 h-4 w-5 text-indigo-600 border-gray-300"
+                                                onclick="onDiskImageClicked();">
                                             <label for="disk-image-normal"
                                                 class="ml-3 block text-sm font-medium text-gray-700">normal</label>
                                         </div>
 
                                         <div class="flex items-center">
                                             <input id="disk-image-minimal" name="disk-image" type="radio" value="minimal"
-                                                class="focus:ring-indigo-500 h-4 w-5 text-indigo-600 border-gray-300">
+                                                class="focus:ring-indigo-500 h-4 w-5 text-indigo-600 border-gray-300"
+                                                onclick="onDiskImageClicked();">
                                             <label for="disk-image-minimal"
                                                 class="ml-3 block text-sm font-medium text-gray-700">minimal</label>
                                         </div>
@@ -181,12 +185,40 @@
                     <div class="py-4 sm:py-5 sm:gap-4 sm:px-6">
                         <dd
                             class="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2 space-x-4 items-center justify-center ">
-                            <button
+                            <?php
+                            $versions = array();
+                            $root_dir = './builds/cheribsd';
+                            if (is_dir($root_dir)) {
+                                if ($dh = opendir($root_dir)) {
+                                    while (($file = readdir($dh)) !== false) {
+                                        if (is_dir("$root_dir/$file") && $file != "." && $file != "..") {
+                                            array_push($versions, $file);
+                                        }
+                                    }
+                                    closedir($dh);
+                                }
+                            }
+                            sort($versions);
+                            $versions = array_reverse($versions);
+                            $latest_version = "";
+                            $latest_run_url = "";
+                            $latest_qemu_url = "";
+                            $latest_morello_sdk_url = "";
+                            if (count($versions) > 0) {
+                                $latest_version = '/cheribsd/' . $versions[0] . '/images/cheribsd-morello-purecap.img.xz';
+                                $latest_run_url = "https://cheri.build/?architecture=purecap&disk-image=normal&version=" . $versions[0];
+                                $latest_qemu_url = '/cheribsd/' . $versions[0] . '/qemu/qemu-aarch64-apple-darwin.tar.xz';
+                                $latest_morello_sdk_url = '/cheribsd/' . $versions[0] . '/morello-sdk/morello-sdk-purecap-aarch64-apple-darwin.tar.xz';
+                            }
+                            ?>
+                            <a
                                 class="px-4 py-2 font-semibold text-sm bg-cyan-500 text-white rounded-full shadow-sm"
-                                onclick="onDownloadImageClicked();">Download Image</button>
-                            <button
+                                id="download-url" onclick="onDownloadImageClicked();"
+                                href="<?php echo $latest_version; ?>">Download Image</a>
+                            <a
                                 class="px-4 py-2 font-semibold text-sm bg-green-500 text-white rounded-full shadow-sm"
-                                onclick="onRunImageClicked();">Run It on cheri.run!</button>
+                                id="run-on-cherirun-url" onclick="onRunImageClicked();"
+                                href="<?php echo $latest_run_url; ?>">Run It on cheri.run!</a>
                         </dd>
                     </div>
                 </dl>
@@ -205,18 +237,20 @@
                             <fieldset>
                                 <div class="space-y-4 flex items-center sm:space-y-0 sm:space-x-10">
                                     <div class="flex items-center">
-                                        <input id="cpu-x86_64" name="os-arch" type="radio" checked value="x86_64"
-                                            class="focus:ring-indigo-500 h-4 w-5 text-indigo-600 border-gray-300">
-                                        <label for="cpu-x86_64"
-                                            class="ml-3 block text-sm font-medium text-gray-700">x86_64</label>
-                                    </div>
-
-                                    <div class="flex items-center">
-                                        <input id="cpu-aarch64" name="os-arch" type="radio" value="aarch64"
-                                            class="focus:ring-indigo-500 h-4 w-5 text-indigo-600 border-gray-300">
+                                        <input id="cpu-aarch64" name="os-arch" type="radio" checked value="aarch64"
+                                            class="focus:ring-indigo-500 h-4 w-5 text-indigo-600 border-gray-300"
+                                            onclick="onHostArchitectureChange();">
                                         <label for="cpu-aarch64"
                                             class="ml-3 block text-sm font-medium text-gray-700">aarch64</label>
                                     </div>
+
+                                    <div class="flex items-center">
+                                        <input id="cpu-x86_64" name="os-arch" type="radio" value="x86_64"
+                                            class="focus:ring-indigo-500 h-4 w-5 text-indigo-600 border-gray-300"
+                                            onclick="onHostArchitectureChange();">
+                                        <label for="cpu-x86_64"
+                                            class="ml-3 block text-sm font-medium text-gray-700">x86_64</label>
+                                    </div>                                    
                                 </div>
                             </fieldset>
                         </dd>
@@ -228,14 +262,16 @@
                                 <div class="space-y-4 flex items-center sm:space-y-0 sm:space-x-10">
                                     <div class="flex items-center">
                                         <input id="os-mac" name="os" type="radio" checked value="apple-darwin"
-                                            class="focus:ring-indigo-500 h-4 w-5 text-indigo-600 border-gray-300">
+                                            class="focus:ring-indigo-500 h-4 w-5 text-indigo-600 border-gray-300"
+                                            onclick="onHostOSChange();">
                                         <label for="os-mac"
                                             class="ml-3 block text-sm font-medium text-gray-700">macOS</label>
                                     </div>
 
                                     <div class="flex items-center">
                                         <input id="os-linux" name="os" type="radio" value="linux-gnu"
-                                            class="focus:ring-indigo-500 h-4 w-5 text-indigo-600 border-gray-300">
+                                            class="focus:ring-indigo-500 h-4 w-5 text-indigo-600 border-gray-300"
+                                            onclick="onHostOSChange();">
                                         <label for="os-linux"
                                             class="ml-3 block text-sm font-medium text-gray-700">Linux</label>
                                     </div>
@@ -246,12 +282,14 @@
                     <div class="py-4 sm:py-5 sm:gap-4 sm:px-6">
                         <dd
                             class="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2 space-x-4 items-center justify-center ">
-                            <button
+                            <a
                                 class="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm"
-                                onclick="onDownloadQEMUClicked();">Download QEMU</button>
-                            <button
+                                id="qemu-url" onclick="onDownloadQEMUClicked();"
+                                href="<?php echo $latest_qemu_url; ?>">Download QEMU</a>
+                            <a
                                 class="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm"
-                                onclick="onDownloadSDKClicked();">Download Morello SDK</button>
+                                id="morello-sdk-url" onclick="onDownloadMorelloSDKClicked();"
+                                href="<?php echo $latest_morello_sdk_url; ?>">Download Morello SDK</a>
                         </dd>
                     </div>
                 </dl>
@@ -262,48 +300,77 @@
 </body>
 
 <script>
-    function onDownloadImageClicked() {
+    function generateSystemImageDownloadURL() {
+        const arch = $("input[name='arch']:checked").val()
         const disk_image = $("input[name='disk-image']:checked").val()
+        let disk_image_param = ''
         if (disk_image === 'minimal') {
-            disk_image = '-minimal'
+            disk_image_param = '-minimal'
         } else {
-            disk_image = ''
+            disk_image_param = ''
         }
-        const downloadUrl = (`/cheribsd/${$("#cheribsd-release").val()}/images/cheribsd${disk_image}-morello-${$("input[name='arch']:checked").val()}.img.xz`)
-        window.open(downloadUrl)
+        const version = $("#cheribsd-release").val()
+        const run_url = (`https://cheri.build/?architecture=${arch}&disk-image=${disk_image}&version=${version}`)
+        const download_url = (`/cheribsd/${version}/images/cheribsd${disk_image_param}-morello-${arch}.img.xz`)
+        return [download_url, run_url]
+    }
+
+    function onArchitectureClicked() {
+        const [download_url, run_url] = generateSystemImageDownloadURL()
+        $("#download-url").attr("href", download_url)
+        $("#run-on-cherirun-url").attr("href", run_url)
+    }
+
+    function onDiskImageClicked() {
+        const [download_url, run_url] = generateSystemImageDownloadURL()
+        $("#download-url").attr("href", download_url)
+        $("#run-on-cherirun-url").attr("href", run_url)
+    }
+
+    function onDownloadImageClicked() {
+        const [download_url, _] = generateSystemImageDownloadURL()
+        window.open(download_url)
     }
 
     function onRunImageClicked() {
-        const redirectUrl = (`https://cheri.run/?disk-image=${$("input[name='disk-image']:checked").val()}&architecture=${$("input[name='arch']:checked").val()}&version=${$("#cheribsd-release").val()}`)
-        window.open(redirectUrl)
+        const [_, run_url] = generateSystemImageDownloadURL()
+        window.open(run_url)
+    }
+
+    function generateQEMUAndMorelloSDKDownloadURL() {
+        const arch = $("input[name='arch']:checked").val()
+        const os_arch = $("input[name='os-arch']:checked").val()
+        const os = $("input[name='os']:checked").val()
+        const version = $("#cheribsd-release").val()
+        const qemu_download_url = (`/cheribsd/${version}/qemu/qemu-${os_arch}-${os}.tar.xz`)
+        const morello_sdk_download_url = (`/cheribsd/${version}/morello-sdk/morello-sdk-${arch}-${os_arch}-${os}.tar.xz`)
+        return [qemu_download_url, morello_sdk_download_url]
+    }
+
+    function onHostArchitectureChange() {
+        const [qemu_download_url, morello_sdk_download_url] = generateQEMUAndMorelloSDKDownloadURL()
+        $("#qemu-url").attr("href", qemu_download_url)
+        $("#morello-sdk-url").attr("href", morello_sdk_download_url)
+    }
+
+    function onHostOSChange() {
+        const [qemu_download_url, morello_sdk_download_url] = generateQEMUAndMorelloSDKDownloadURL()
+        $("#qemu-url").attr("href", qemu_download_url)
+        $("#morello-sdk-url").attr("href", morello_sdk_download_url)
     }
 
     function onDownloadQEMUClicked() {
-        const downloadUrl = `/cheribsd/${$('#cheribsd-release').val()}/qemu/qemu-${$("input[name='os-arch']:checked").val()}-${$("input[name='os']:checked").val()}.tar.xz`
-        console.log(downloadUrl)
-        window.open(downloadUrl)
+        const [qemu_download_url, _] = generateQEMUAndMorelloSDKDownloadURL()
+        window.open(qemu_download_url)
     }
 
-    function onDownloadSDKClicked() {
-        const downloadUrl = `/cheribsd/${$('#cheribsd-release').val()}/morello-sdk/morello-sdk-${$("input[name='arch']:checked").val()}-${$("input[name='os-arch']:checked").val()}-${$("input[name='os']:checked").val()}.tar.xz`
-        console.log(downloadUrl)
-        window.open(downloadUrl)
+    function onDownloadMorelloSDKClicked() {
+        const [_, morello_sdk_download_url] = generateQEMUAndMorelloSDKDownloadURL()
+        window.open(morello_sdk_download_url)
     }
 
     function getVersionList() {
         <?php
-        $versions = array();
-        $root_dir = './builds/cheribsd';
-        if (is_dir($root_dir)) {
-            if ($dh = opendir($root_dir)) {
-                while (($file = readdir($dh)) !== false) {
-                    if (is_dir("$root_dir/$file") && $file != "." && $file != "..") {
-                        array_push($versions, $file);
-                    }
-                }
-                closedir($dh);
-            }
-        }
         foreach ($versions as $version) {
             echo '$("#cheribsd-release").append($("<option/>", { value: "'.$version.'", text: "'.$version.'" }));';
         }
