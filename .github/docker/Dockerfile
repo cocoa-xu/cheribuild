@@ -41,7 +41,7 @@ RUN apt-get update -q=2 && \
     cd / && \
     curl -fSL "https://github.com/cocoa-xu/cheribuild/releases/download/${version}/cheribsd-morello-${architecture}.img.xz" -o "cheribsd-morello-${architecture}.img.xz" && \
     xz -d "cheribsd-morello-${architecture}.img.xz" && \
-    /usr/local/bin/qemu-img resize "cheribsd-morello-${architecture}.img" +2G && \
+    /usr/local/bin/qemu-img resize -f raw "cheribsd-morello-${architecture}.img" +2G && \
     A=$(echo "export LANG=en_US.UTF-8\nexport LANGUAGE=en_US.UTF-8\nexport LC_ALL=en_US.UTF-8\n" >> /root/.bashrc) && \
     echo "root:root" | chpasswd
 COPY ./start_cheribsd /usr/bin/start_cheribsd
