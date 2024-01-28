@@ -177,7 +177,7 @@
                             <div>
                                 <select
                                     class="form-select px-3 text-base font-normal text-gray-700 bg-white border border-solid border-gray-300 rounded focus:text-gray-700 focus:bg-white focus:border-blue-600"
-                                    name="release" id="cheribsd-release">
+                                    name="release" id="cheribsd-release" onclick="onReleaseChange();">
                                 </select>
                             </div>
                         </dd>
@@ -322,6 +322,12 @@
     }
 
     function onDiskImageClicked() {
+        const [download_url, run_url] = generateSystemImageDownloadURL()
+        $("#download-url").attr("href", download_url)
+        $("#run-on-cherirun-url").attr("href", run_url)
+    }
+
+    function onReleaseChange() {
         const [download_url, run_url] = generateSystemImageDownloadURL()
         $("#download-url").attr("href", download_url)
         $("#run-on-cherirun-url").attr("href", run_url)
