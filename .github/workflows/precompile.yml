@@ -318,9 +318,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        arch:
-          - purecap
-          - hybrid
+        include:
+          - pair:
+              arch: purecap
+              host: x86_64-linux-gnu
+              platform: linux/amd64
+          - pair:
+              arch: hybrid
+              host: x86_64-linux-gnu
+              platform: linux/amd64
+          - pair:
+              arch: purecap
+              host: aarch64-linux-gnu
+              platform: linux/arm64
+          - pair:
+              arch: hybrid
+              host: aarch64-linux-gnu
+              platform: linux/arm64
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -331,13 +346,21 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Build and push Docker Image
         uses: docker/build-push-action@v5
         with:
           context: .github/docker
           file: .github/docker/Dockerfile
+          platforms: ${{ matrix.pair.platform }}
           push: true
-          tags: cocoaxu/cheribsd-${{ matrix.arch }}:latest,cocoaxu/cheribsd-${{ matrix.arch }}:${{ github.ref_name }}
+          tags: cocoaxu/cheribsd-${{ matrix.pair.arch }}:latest,cocoaxu/cheribsd-${{ matrix.pair.arch }}:${{ github.ref_name }}
           build-args: |
-            architecture=${{ matrix.arch }}
+            architecture=${{ matrix.pair.arch }}
             version=${{ github.ref_name }}
+            host_architecture=${{ matrix.pair.host }}
