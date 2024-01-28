@@ -23,7 +23,7 @@
 
     $files = ["morello-sdk-$arch-$platform.tar.xz" => "morello-sdk"];
     if ($arch === 'purecap') {
-      $files["qemu-$platform.tar.gz"] = "qemu";
+      $files["qemu-$platform.tar.xz"] = "qemu";
     }
     if ($platform === 'x86_64-linux-gnu') {
       $files["cheribsd-morello-$arch.tar.xz"] = "images";
