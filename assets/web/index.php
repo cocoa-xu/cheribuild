@@ -162,7 +162,7 @@
                                 onclick="onDownloadImageClicked();">Download Image</button>
                             <button
                                 class="px-4 py-2 font-semibold text-sm bg-green-500 text-white rounded-full shadow-sm"
-                                onclick="onRunLatestImageClicked();">Run Lastest Image</button>
+                                onclick="onRunImageClicked();">Run It on cheri.run!</button>
                         </dd>
                     </div>
                 </dl>
@@ -244,8 +244,8 @@
         window.open(downloadUrl)
     }
 
-    function onRunLatestImageClicked() {
-        const redirectUrl = (`https://cheri.run/?architecture=${$("input[name='arch']:checked").val()}`)
+    function onRunImageClicked() {
+        const redirectUrl = (`https://cheri.run/?architecture=${$("input[name='arch']:checked").val()}&version=${$("#cheribsd-release").val()}`)
         window.open(redirectUrl)
     }
 
