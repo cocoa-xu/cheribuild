@@ -141,6 +141,30 @@
                             </div>
                         </dd>
                     </div>
+                    <div class="py-5 grid grid-cols-3 gap-4 px-6">
+                        <dt class="text-sm font-medium text-gray-500 ">Disk Image</dt>
+                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                            <div>
+                                <fieldset>
+                                    <div class="space-y-4 flex items-center sm:space-y-0 sm:space-x-10">
+                                        <div class="flex items-center">
+                                            <input id="disk-image-normal" name="disk-image" type="radio" value="normal" checked
+                                                class="focus:ring-indigo-500 h-4 w-5 text-indigo-600 border-gray-300">
+                                            <label for="disk-image-normal"
+                                                class="ml-3 block text-sm font-medium text-gray-700">normal</label>
+                                        </div>
+
+                                        <div class="flex items-center">
+                                            <input id="disk-image-minimal" name="disk-image" type="radio" value="minimal"
+                                                class="focus:ring-indigo-500 h-4 w-5 text-indigo-600 border-gray-300">
+                                            <label for="disk-image-minimal"
+                                                class="ml-3 block text-sm font-medium text-gray-700">minimal</label>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </dd>
+                    </div>
                     <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-500 my-auto">
                             Release
@@ -239,13 +263,18 @@
 
 <script>
     function onDownloadImageClicked() {
-        const downloadUrl = (`/cheribsd/${$("#cheribsd-release").val()}/images/cheribsd-morello-${$("input[name='arch']:checked").val()}.img.xz`)
-        console.log(downloadUrl)
+        const disk_image = $("input[name='disk-image']:checked").val()
+        if (disk_image === 'minimal') {
+            disk_image = '-minimal'
+        } else {
+            disk_image = ''
+        }
+        const downloadUrl = (`/cheribsd/${$("#cheribsd-release").val()}/images/cheribsd${disk_image}-morello-${$("input[name='arch']:checked").val()}.img.xz`)
         window.open(downloadUrl)
     }
 
     function onRunImageClicked() {
-        const redirectUrl = (`https://cheri.run/?architecture=${$("input[name='arch']:checked").val()}&version=${$("#cheribsd-release").val()}`)
+        const redirectUrl = (`https://cheri.run/?disk-image=${$("input[name='disk-image']:checked").val()}&architecture=${$("input[name='arch']:checked").val()}&version=${$("#cheribsd-release").val()}`)
         window.open(redirectUrl)
     }
 
