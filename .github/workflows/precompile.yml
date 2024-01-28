@@ -339,5 +339,5 @@ jobs:
           push: true
           tags: cocoaxu/cheribsd-${{ matrix.arch }}:latest,cocoaxu/cheribsd-${{ matrix.arch }}:${{ github.ref_name }}
           build-args: |
-            arch=${{ matrix.arch }}
+            architecture=${{ matrix.arch }}
             version=${{ github.ref_name }}
