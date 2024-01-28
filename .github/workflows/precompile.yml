@@ -313,28 +313,15 @@ jobs:
 
   docker-image:
     runs-on: ubuntu-latest
+    env:
+      PLATFORMS: "linux/amd64,linux/arm64"
     name: Create and Push Docker Images
     needs: linux-x86_64
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - pair:
-              arch: purecap
-              platforms: "linux/amd64,linux/arm64"
-              disk_image: normal
-          - pair:
-              arch: hybrid
-              platforms: "linux/amd64,linux/arm64"
-              disk_image: normal
-          - pair:
-              arch: purecap
-              platforms: "linux/amd64,linux/arm64"
-              disk_image: minimal
-          - pair:
-              arch: hybrid
-              platforms: "linux/amd64,linux/arm64"
-              disk_image: minimal
+        arch: [purecap, hybrid]
+        disk_image: [normal, minimal]
 
     steps:
       - name: Checkout
@@ -353,29 +340,29 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build and push Normal CheriBSD Image
-        if: ${{ matrix.pair.disk_image }} == 'normal'
+        if: ${{ matrix.disk_image }} == 'normal'
         uses: docker/build-push-action@v5
         with:
           context: .github/docker
           file: .github/docker/Dockerfile
-          platforms: ${{ matrix.pair.platforms }}
+          platforms: ${{ env.PLATFORMS }}
           push: true
-          tags: cocoaxu/cheribsd-${{ matrix.pair.arch }}:latest,cocoaxu/cheribsd-${{ matrix.pair.arch }}:${{ github.ref_name }}
+          tags: cocoaxu/cheribsd-${{ matrix.arch }}:latest,cocoaxu/cheribsd-${{ matrix.arch }}:${{ github.ref_name }}
           build-args: |
-            architecture=${{ matrix.pair.arch }}
+            architecture=${{ matrix.arch }}
             version=${{ github.ref_name }}
-            disk_image=${{ matrix.pair.disk_image }}
+            disk_image=${{ matrix.disk_image }}
 
       - name: Build and push Minimal CheriBSD Image
-        if: ${{ matrix.pair.disk_image }} == 'minimal'
+        if: ${{ matrix.disk_image }} == 'minimal'
         uses: docker/build-push-action@v5
         with:
           context: .github/docker
           file: .github/docker/Dockerfile
-          platforms: ${{ matrix.pair.platforms }}
+          platforms: ${{ env.PLATFORMS }}
           push: true
-          tags: cocoaxu/cheribsd-${{ matrix.pair.disk_image }}-${{ matrix.pair.arch }}:latest,cocoaxu/cheribsd-${{ matrix.pair.disk_image }}-${{ matrix.pair.arch }}:${{ github.ref_name }}
+          tags: cocoaxu/cheribsd-${{ matrix.disk_image }}-${{ matrix.arch }}:latest,cocoaxu/cheribsd-${{ matrix.disk_image }}-${{ matrix.arch }}:${{ github.ref_name }}
           build-args: |
-            architecture=${{ matrix.pair.arch }}
+            architecture=${{ matrix.arch }}
             version=${{ github.ref_name }}
-            disk_image=${{ matrix.pair.disk_image }}
+            disk_image=${{ matrix.disk_image }}
