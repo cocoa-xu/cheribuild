@@ -2,7 +2,7 @@
 
 set -e
 
-NCPUS=${1:-$(nproc)}
+NCPUS=${1:-4}
 MEMORY=${2:-512}
 
 /usr/local/bin/qemu-system-morello \
