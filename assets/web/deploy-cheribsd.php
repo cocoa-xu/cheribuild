@@ -26,8 +26,8 @@
       $files["qemu-$platform.tar.xz"] = "qemu";
     }
     if ($platform === 'x86_64-linux-gnu') {
-      $files["cheribsd-morello-$arch.tar.xz"] = "images";
-      $files["cheribsd-minimal-morello-$arch.tar.xz"] = "images";
+      $files["cheribsd-morello-$arch.img.xz"] = "images";
+      $files["cheribsd-minimal-morello-$arch.img.xz"] = "images";
     }
 
     foreach ($files as $filename => $subdir) {
@@ -73,7 +73,7 @@
         echo "    Expected: $expected_checksum\n";
         echo "    Got:      $file_checksum\n";
         unlink($save_file_loc);
-        unlink("$root_dir/$subdir/$sha256_filename");
+        unlink("$root_dir/$subdir/$sha256_filename.tmp");
         continue;
       } else {
         echo "[-] Checksum matched for $filename\n";
