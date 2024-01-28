@@ -323,18 +323,42 @@ jobs:
               arch: purecap
               host: x86_64-linux-gnu
               platform: linux/amd64
+              disk_image: normal
           - pair:
               arch: hybrid
               host: x86_64-linux-gnu
               platform: linux/amd64
+              disk_image: normal
           - pair:
               arch: purecap
               host: aarch64-linux-gnu
               platform: linux/arm64
+              disk_image: normal
           - pair:
               arch: hybrid
               host: aarch64-linux-gnu
               platform: linux/arm64
+              disk_image: normal
+          - pair:
+              arch: purecap
+              host: x86_64-linux-gnu
+              platform: linux/amd64
+              disk_image: minimal
+          - pair:
+              arch: hybrid
+              host: x86_64-linux-gnu
+              platform: linux/amd64
+              disk_image: minimal
+          - pair:
+              arch: purecap
+              host: aarch64-linux-gnu
+              platform: linux/arm64
+              disk_image: minimal
+          - pair:
+              arch: hybrid
+              host: aarch64-linux-gnu
+              platform: linux/arm64
+              disk_image: minimal
 
     steps:
       - name: Checkout
@@ -352,7 +376,8 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build and push Docker Image
+      - name: Build and push Normal CheriBSD Image
+        if: ${{ matrix.pair.disk_image }} == 'normal'
         uses: docker/build-push-action@v5
         with:
           context: .github/docker
@@ -363,4 +388,20 @@ jobs:
           build-args: |
             architecture=${{ matrix.pair.arch }}
             version=${{ github.ref_name }}
+            disk_image=${{ matrix.pair.disk_image }}
+            host_architecture=${{ matrix.pair.host }}
+
+      - name: Build and push Minimal CheriBSD Image
+        if: ${{ matrix.pair.disk_image }} == 'minimal'
+        uses: docker/build-push-action@v5
+        with:
+          context: .github/docker
+          file: .github/docker/Dockerfile
+          platforms: ${{ matrix.pair.platform }}
+          push: true
+          tags: cocoaxu/cheribsd-${{ matrix.pair.disk_image }}-${{ matrix.pair.arch }}:latest,cocoaxu/cheribsd-${{ matrix.pair.disk_image }}-${{ matrix.pair.arch }}:${{ github.ref_name }}
+          build-args: |
+            architecture=${{ matrix.pair.arch }}
+            version=${{ github.ref_name }}
+            disk_image=${{ matrix.pair.disk_image }}
             host_architecture=${{ matrix.pair.host }}
