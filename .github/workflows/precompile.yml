@@ -321,43 +321,19 @@ jobs:
         include:
           - pair:
               arch: purecap
-              host: x86_64-linux-gnu
-              platform: linux/amd64
+              platforms: "linux/amd64,linux/arm64"
               disk_image: normal
           - pair:
               arch: hybrid
-              host: x86_64-linux-gnu
-              platform: linux/amd64
-              disk_image: normal
-          - pair:
-              arch: purecap
-              host: aarch64-linux-gnu
-              platform: linux/arm64
-              disk_image: normal
-          - pair:
-              arch: hybrid
-              host: aarch64-linux-gnu
-              platform: linux/arm64
+              platforms: "linux/amd64,linux/arm64"
               disk_image: normal
           - pair:
               arch: purecap
-              host: x86_64-linux-gnu
-              platform: linux/amd64
+              platforms: "linux/amd64,linux/arm64"
               disk_image: minimal
           - pair:
               arch: hybrid
-              host: x86_64-linux-gnu
-              platform: linux/amd64
-              disk_image: minimal
-          - pair:
-              arch: purecap
-              host: aarch64-linux-gnu
-              platform: linux/arm64
-              disk_image: minimal
-          - pair:
-              arch: hybrid
-              host: aarch64-linux-gnu
-              platform: linux/arm64
+              platforms: "linux/amd64,linux/arm64"
               disk_image: minimal
 
     steps:
@@ -382,14 +358,13 @@ jobs:
         with:
           context: .github/docker
           file: .github/docker/Dockerfile
-          platforms: ${{ matrix.pair.platform }}
+          platforms: ${{ matrix.pair.platforms }}
           push: true
           tags: cocoaxu/cheribsd-${{ matrix.pair.arch }}:latest,cocoaxu/cheribsd-${{ matrix.pair.arch }}:${{ github.ref_name }}
           build-args: |
             architecture=${{ matrix.pair.arch }}
             version=${{ github.ref_name }}
             disk_image=${{ matrix.pair.disk_image }}
-            host_architecture=${{ matrix.pair.host }}
 
       - name: Build and push Minimal CheriBSD Image
         if: ${{ matrix.pair.disk_image }} == 'minimal'
@@ -397,11 +372,10 @@ jobs:
         with:
           context: .github/docker
           file: .github/docker/Dockerfile
-          platforms: ${{ matrix.pair.platform }}
+          platforms: ${{ matrix.pair.platforms }}
           push: true
           tags: cocoaxu/cheribsd-${{ matrix.pair.disk_image }}-${{ matrix.pair.arch }}:latest,cocoaxu/cheribsd-${{ matrix.pair.disk_image }}-${{ matrix.pair.arch }}:${{ github.ref_name }}
           build-args: |
             architecture=${{ matrix.pair.arch }}
             version=${{ github.ref_name }}
             disk_image=${{ matrix.pair.disk_image }}
-            host_architecture=${{ matrix.pair.host }}

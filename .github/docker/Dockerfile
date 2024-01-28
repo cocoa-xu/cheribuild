@@ -4,7 +4,6 @@ LABEL maintainer="Cocoa Xu <i@uwucocoa.moe>"
 ARG architecture
 ARG version
 ARG disk_image
-ARG host_architecture
 
 WORKDIR /
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -25,9 +24,10 @@ RUN apt-get update -q=2 && \
     locale-gen && \    
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
-    curl -fSL "https://github.com/cocoa-xu/cheribuild/releases/download/${version}/qemu-${host_architecture}.tar.xz" -o "qemu-${host_architecture}.tar.xz" && \
-    tar -xf "qemu-${host_architecture}.tar.xz" -C /usr/local --strip-components=1 && \
-    rm -f "qemu-${host_architecture}.tar.xz" && \
+    export HOST_ARCHIECTURE="$(uname -p)-linux-gnu" && \
+    curl -fSL "https://github.com/cocoa-xu/cheribuild/releases/download/${version}/qemu-${HOST_ARCHIECTURE}.tar.xz" -o "qemu-${HOST_ARCHIECTURE}.tar.xz" && \
+    tar -xf "qemu-${HOST_ARCHIECTURE}.tar.xz" -C /usr/local --strip-components=1 && \
+    rm -f "qemu-${HOST_ARCHIECTURE}.tar.xz" && \
     cd /usr/local && \
     mv ./bin/qemu-system-morello ./ && \
     rm -f ./bin/qemu-system-* && \
