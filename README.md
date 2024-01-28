@@ -1,4 +1,4 @@
-# cheribuild
+<h1><a href="https://cheri.build" target="about:_blank"><img src="https://github.com/cocoa-xu/cheribuild/raw/main/assets/repository-open-graph.png" alt="Logo"></a></h1>
 
 Unofficial builds of [CheriBSD](https://www.cheribsd.org), a system that support ARM Morello in emulation and on hardware. 
 
