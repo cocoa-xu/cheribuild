@@ -3,6 +3,7 @@ LABEL maintainer="Cocoa Xu <i@uwucocoa.moe>"
 
 ARG architecture
 ARG version
+ARG disk_image
 ARG host_architecture
 
 WORKDIR /
@@ -39,9 +40,15 @@ RUN apt-get update -q=2 && \
     rm -f ./share/qemu/opensbi* && \
     rm -f ./share/qemu/s390* && \
     cd / && \
-    curl -fSL "https://github.com/cocoa-xu/cheribuild/releases/download/${version}/cheribsd-morello-${architecture}.img.xz" -o "cheribsd-morello-${architecture}.img.xz" && \
-    xz -d "cheribsd-morello-${architecture}.img.xz" && \
-    /usr/local/bin/qemu-img resize -f raw "cheribsd-morello-${architecture}.img" +2G && \
+    if [ "${disk_image}" = "minimal" ]; then \
+        export disk_image="cheribsd-minimal-morello-${architecture}.img" ; \
+    else \
+        export disk_image="cheribsd-morello-${architecture}.img" ; \
+    fi && \
+    curl -fSL "https://github.com/cocoa-xu/cheribuild/releases/download/${version}/${disk_image}.xz" -o "${disk_image}.xz" ; \
+    xz -d "${disk_image}.xz" && \
+    /usr/local/bin/qemu-img resize -f raw "${disk_image}" +2G && \
+    mv "${disk_image}" /cheribsd.img && \
     A=$(echo "export LANG=en_US.UTF-8\nexport LANGUAGE=en_US.UTF-8\nexport LC_ALL=en_US.UTF-8\n" >> /root/.bashrc) && \
     echo "root:root" | chpasswd
 COPY ./start_cheribsd /usr/bin/start_cheribsd
