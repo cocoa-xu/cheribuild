@@ -12,7 +12,7 @@ MEMORY=${2:-512}
     -bios edk2-aarch64-code.fd \
     -m "${MEMORY}" \
     -nographic \
-    -drive if=none,file="/cheribsd-minimal-morello-purecap.img",id=drv,format=raw \
+    -drive if=none,file="/cheribsd-morello-purecap.img",id=drv,format=raw \
     -device virtio-blk-pci,drive=drv \
     -device virtio-net-pci,netdev=net0 \
     -netdev 'user,id=net0,hostfwd=tcp::2222-:22' \
