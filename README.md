@@ -11,12 +11,12 @@ Prebuilt CheriBSD system images can be found at [https://cheri.build](https://ch
 ## Docker Image
 This repo also builds Docker images that can be run prebuilt CheriBSD system images. Prebuilt Docker images includes:
 
-- `cocoaxu/cheribsd-purecap`: CheriBSD purecap system image
-- `cocoaxu/cheribsd-hybrid`: CheriBSD hybrid system image
-- `cocoaxu/cheribsd-minimal-purecap`: The minimal CheriBSD purecap system image
-- `cocoaxu/cheribsd-minimal-hybrid`: The minimal CheriBSD hybrid system image
+- [`cocoaxu/cheribsd-purecap`](https://hub.docker.com/r/cocoaxu/cheribsd-purecap): CheriBSD purecap system image
+- [`cocoaxu/cheribsd-hybrid`](https://hub.docker.com/r/cocoaxu/cheribsd-hybrid): CheriBSD hybrid system image
+- [`cocoaxu/cheribsd-minimal-purecap`](https://hub.docker.com/r/cocoaxu/cheribsd-minimal-purecap): The minimal CheriBSD purecap system image
+- [`cocoaxu/cheribsd-minimal-hybrid`](https://hub.docker.com/r/cocoaxu/cheribsd-minimal-hybrid): The minimal CheriBSD hybrid system image
 
-The tag of the Docker image is the same as the tag of the releases in this repo. For example, `v2024.01.05-f8b62f01` is the Docker image built based on [CTSRD-CHERI/cheribuild@f8b62f01](https://github.com/CTSRD-CHERI/cheribuild/tree/f8b62f01), which was commited on 05 Jan 2024.
+The tag of the Docker image is the same as the tag of the releases in this repo. For example, [`v2024.01.05-f8b62f01`](https://github.com/cocoa-xu/cheribuild/releases/tag/v2024.01.05-f8b62f01) is the Docker image built based on [CTSRD-CHERI/cheribuild@f8b62f01](https://github.com/CTSRD-CHERI/cheribuild/tree/f8b62f01), which was commited on 05 Jan 2024.
 
 Also, these Docker images are built on both `linux/amd64` and `linux/arm64` platforms. Therefore, you can run these Docker images on either x86_64 and ARM64 machines without performing cost by emulation.
 
