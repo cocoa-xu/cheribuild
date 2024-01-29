@@ -180,7 +180,7 @@
                         <dt class="text-sm font-medium text-gray-500 my-auto">
                             Release
                         </dt>
-                        <dd class="mt-1 h-0 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        <dd class="mt-0 h-0 text-sm text-gray-900 col-span-2">
                             <div>
                                 <select
                                     class="form-select px-3 text-base font-normal text-gray-700 bg-white border border-solid border-gray-300 rounded focus:text-gray-700 focus:bg-white focus:border-blue-600"
@@ -189,9 +189,9 @@
                             </div>
                         </dd>
                     </div>
-                    <div class="py-4 sm:py-5 sm:gap-4 sm:px-6">
+                    <div class="py-5 gap-4 px-6">
                         <dd
-                            class="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2 space-x-4 items-center justify-center ">
+                            class="mt-0 flex text-sm text-gray-900 sm:col-span-2 space-x-4 items-center justify-center ">
                             <?php
                             $versions = array();
                             $root_dir = './builds/cheribsd';
@@ -286,9 +286,9 @@
                             </fieldset>
                         </dd>
                     </div>
-                    <div class="py-4 sm:py-5 sm:gap-4 sm:px-6">
+                    <div class="py-5 gap-4 px-6">
                         <dd
-                            class="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2 space-x-4 items-center justify-center ">
+                            class="mt-0 flex text-sm text-gray-900 sm:col-span-2 space-x-4 items-center justify-center ">
                             <a
                                 class="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm"
                                 id="qemu-url" onclick="onDownloadQEMUClicked();"
