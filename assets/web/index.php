@@ -317,7 +317,7 @@
             disk_image_param = ''
         }
         const version = $("#cheribsd-release").val()
-        const run_url = (`https://cheri.run/?architecture=${arch}&disk-image=${disk_image}&version=${version}`)
+        const run_url = (`https://cheri.run/?architecture=${arch}&disk_image=${disk_image}&version=${version}`)
         const download_url = (`/cheribsd/${version}/images/cheribsd${disk_image_param}-morello-${arch}.img.xz`)
         return [download_url, run_url]
     }
