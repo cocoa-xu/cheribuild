@@ -213,7 +213,7 @@
                             $latest_morello_sdk_url = "";
                             if (count($versions) > 0) {
                                 $latest_version = '/cheribsd/' . $versions[0] . '/images/cheribsd-morello-purecap.img.xz';
-                                $latest_run_url = "https://cheri.build/?architecture=purecap&disk-image=normal&version=" . $versions[0];
+                                $latest_run_url = "https://cheri.run/?architecture=purecap&disk-image=normal&version=" . $versions[0];
                                 $latest_qemu_url = '/cheribsd/' . $versions[0] . '/qemu/qemu-aarch64-apple-darwin.tar.xz';
                                 $latest_morello_sdk_url = '/cheribsd/' . $versions[0] . '/morello-sdk/morello-sdk-purecap-aarch64-apple-darwin.tar.xz';
                             }
@@ -317,7 +317,7 @@
             disk_image_param = ''
         }
         const version = $("#cheribsd-release").val()
-        const run_url = (`https://cheri.build/?architecture=${arch}&disk-image=${disk_image}&version=${version}`)
+        const run_url = (`https://cheri.run/?architecture=${arch}&disk-image=${disk_image}&version=${version}`)
         const download_url = (`/cheribsd/${version}/images/cheribsd${disk_image_param}-morello-${arch}.img.xz`)
         return [download_url, run_url]
     }
