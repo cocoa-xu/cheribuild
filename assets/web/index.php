@@ -114,8 +114,8 @@
 <body>
     <noscript>Please enable JavaScript</noscript>
     <h3 class="text-xl my-9 text-center">Cheri Build</h3>
-    <div class="flex flex-row flex-wrap justify-center mt-8 items-center mb-10 space-x-4 space-y-4 items-baseline">
-        <div class="bg-white shadow overflow-hidden sm:rounded-lg max-w-xl">
+    <div class="flex flex-col justify-center mt-8 items-center mb-10 space-y-4">
+        <div class="bg-white shadow overflow-hidden flex-1 w-full sm:w-full md:w-1/2 lg:w-1/2 sm:rounded-lg">
             <div class="px-4 py-5 sm:px-6">
                 <h3 class="text-lg leading-6 font-medium text-gray-900">CheriBSD Images</h3>
                 <p class="mt-1 max-w-2xl text-sm text-gray-500">Select the architecture you want for your CheriBSD
@@ -126,10 +126,10 @@
                 <dl class="sm:divide-y sm:divide-gray-200">
                     <div class="py-5 grid grid-cols-3 gap-4 px-6">
                         <dt class="text-sm font-medium text-gray-500 ">Architecture</dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        <dd class="mt-1 text-sm text-gray-900">
                             <div>
                                 <fieldset>
-                                    <div class="space-y-4 flex items-center sm:space-y-0 sm:space-x-10">
+                                    <div class="flex items-center space-y-0 space-x-10">
                                         <div class="flex items-center">
                                             <input id="arch-purecap" name="arch" type="radio" value="purecap" checked
                                                 class="focus:ring-indigo-500 h-4 w-5 text-indigo-600 border-gray-300"
@@ -152,10 +152,10 @@
                     </div>
                     <div class="py-5 grid grid-cols-3 gap-4 px-6">
                         <dt class="text-sm font-medium text-gray-500 ">Disk Image</dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        <dd class="mt-1 text-sm text-gray-900">
                             <div>
                                 <fieldset>
-                                    <div class="space-y-4 flex items-center sm:space-y-0 sm:space-x-10">
+                                    <div class="flex items-center space-y-0 space-x-10">
                                         <div class="flex items-center">
                                             <input id="disk-image-normal" name="disk-image" type="radio" value="normal" checked
                                                 class="focus:ring-indigo-500 h-4 w-5 text-indigo-600 border-gray-300"
@@ -176,7 +176,7 @@
                             </div>
                         </dd>
                     </div>
-                    <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <div class="py-5 grid grid-cols-3 gap-4 px-6">
                         <dt class="text-sm font-medium text-gray-500 my-auto">
                             Release
                         </dt>
@@ -231,18 +231,18 @@
                 </dl>
             </div>
         </div>
-        <div class="bg-white shadow overflow-hidden sm:rounded-lg max-w-xl">
+        <div class="bg-white shadow overflow-hidden flex-1 w-full sm:w-full md:w-1/2 lg:w-1/2 sm:rounded-lg">
             <div class="px-4 py-5 sm:px-6">
                 <h3 class="text-lg leading-6 font-medium text-gray-900">QEMU + Morello SDK</h3>
                 <p class="mt-1 max-w-2xl text-sm text-gray-500">Select configuration you want for your QEMU</p>
             </div>
             <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
                 <dl class="sm:divide-y sm:divide-gray-200">
-                    <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 ">
+                    <div class="py-5 grid grid-cols-3 gap-4 px-6 ">
                         <dt class="text-sm font-medium text-gray-500">Host Architecture</dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        <dd class="mt-1 text-sm text-gray-900">
                             <fieldset>
-                                <div class="space-y-4 flex items-center sm:space-y-0 sm:space-x-10">
+                                <div class="flex items-center space-y-0 space-x-10">
                                     <div class="flex items-center">
                                         <input id="cpu-aarch64" name="os-arch" type="radio" checked value="aarch64"
                                             class="focus:ring-indigo-500 h-4 w-5 text-indigo-600 border-gray-300"
@@ -262,11 +262,11 @@
                             </fieldset>
                         </dd>
                     </div>
-                    <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 ">
+                    <div class="py-5 grid grid-cols-3 gap-4 px-6 ">
                         <dt class="text-sm font-medium text-gray-500">Host Operating System</dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        <dd class="mt-1 text-sm text-gray-900">
                             <fieldset>
-                                <div class="space-y-4 flex items-center sm:space-y-0 sm:space-x-10">
+                                <div class="flex items-center space-y-0 space-x-10">
                                     <div class="flex items-center">
                                         <input id="os-mac" name="os" type="radio" checked value="apple-darwin"
                                             class="focus:ring-indigo-500 h-4 w-5 text-indigo-600 border-gray-300"
