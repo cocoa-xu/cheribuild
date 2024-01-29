@@ -213,7 +213,7 @@
                             $latest_morello_sdk_url = "";
                             if (count($versions) > 0) {
                                 $latest_version = '/cheribsd/' . $versions[0] . '/images/cheribsd-morello-purecap.img.xz';
-                                $latest_run_url = "https://cheri.run/?architecture=purecap&disk-image=normal&version=" . $versions[0];
+                                $latest_run_url = "https://cheri.run/?architecture=purecap&disk_image=normal&version=" . $versions[0];
                                 $latest_qemu_url = '/cheribsd/' . $versions[0] . '/qemu/qemu-aarch64-apple-darwin.tar.xz';
                                 $latest_morello_sdk_url = '/cheribsd/' . $versions[0] . '/morello-sdk/morello-sdk-purecap-aarch64-apple-darwin.tar.xz';
                             }
