@@ -115,15 +115,15 @@
     <noscript>Please enable JavaScript</noscript>
     <h3 class="text-xl my-9 text-center">Cheri Build</h3>
     <div class="flex flex-col justify-center mt-8 items-center mb-10 space-y-4">
-        <div class="bg-white shadow overflow-hidden flex-1 w-full sm:w-full md:w-1/2 lg:w-1/2 sm:rounded-lg">
-            <div class="px-4 py-5 sm:px-6">
+        <div class="bg-white shadow overflow-hidden flex-1 w-full sm:w-full md:w-2/3 lg:w-1/2 sm:rounded-lg">
+            <div class="px-10 py-5">
                 <h3 class="text-lg leading-6 font-medium text-gray-900">CheriBSD Images</h3>
                 <p class="mt-1 max-w-2xl text-sm text-gray-500">Select the architecture you want for your CheriBSD
                     image.
                 </p>
             </div>
-            <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
-                <dl class="sm:divide-y sm:divide-gray-200">
+            <div class="border-t border-gray-200 px-4 py-0">
+                <dl class="divide-y divide-gray-200">
                     <div class="py-5 grid grid-cols-3 gap-4 px-6">
                         <dt class="text-sm font-medium text-gray-500 ">Architecture</dt>
                         <dd class="mt-1 text-sm text-gray-900">
@@ -231,14 +231,14 @@
                 </dl>
             </div>
         </div>
-        <div class="bg-white shadow overflow-hidden flex-1 w-full sm:w-full md:w-1/2 lg:w-1/2 sm:rounded-lg">
-            <div class="px-4 py-5 sm:px-6">
+        <div class="bg-white shadow overflow-hidden flex-1 w-full sm:w-full md:w-2/3 lg:w-1/2 sm:rounded-lg">
+            <div class="px-10 py-5">
                 <h3 class="text-lg leading-6 font-medium text-gray-900">QEMU + Morello SDK</h3>
                 <p class="mt-1 max-w-2xl text-sm text-gray-500">Select configuration you want for your QEMU</p>
             </div>
-            <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
-                <dl class="sm:divide-y sm:divide-gray-200">
-                    <div class="py-5 grid grid-cols-3 gap-4 px-6 ">
+            <div class="border-t border-gray-200 px-4 py-0">
+                <dl class="divide-y divide-gray-200">
+                    <div class="py-5 grid grid-cols-3 gap-4 px-6">
                         <dt class="text-sm font-medium text-gray-500">Host Architecture</dt>
                         <dd class="mt-1 text-sm text-gray-900">
                             <fieldset>
