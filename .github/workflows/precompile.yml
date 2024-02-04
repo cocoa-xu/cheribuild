@@ -14,7 +14,8 @@ permissions:
 
 jobs:
   linux-x86_64:
-    runs-on: self-hosted-x86_64-linux-gnu
+    runs-on: ubuntu-lastest
+    # runs-on: self-hosted-x86_64-linux-gnu
     env:
       HOST_TRIPLET: x86_64-linux-gnu
       DOCKER_PLATFORM: linux/amd64
@@ -131,7 +132,8 @@ jobs:
           curl -sS --max-time 1200 --no-progress-meter "${DEPLOY_CHERIBSD_HOOK_URL}arch=${{ matrix.arch }}&version=${{ github.ref_name }}&platform=${{ env.HOST_TRIPLET }}"
 
   macos-x86_64:
-    runs-on: self-hosted-x86_64-apple-darwin
+    runs-on: macos-12
+    # runs-on: self-hosted-x86_64-apple-darwin
     env:
       HOST_TRIPLET: x86_64-apple-darwin
       XZ_OPT: "-e -T0 -9"
@@ -220,7 +222,8 @@ jobs:
           curl -sS --max-time 1200 --no-progress-meter "${DEPLOY_CHERIBSD_HOOK_URL}arch=${{ matrix.arch }}&version=${{ github.ref_name }}&platform=${{ env.HOST_TRIPLET }}"
 
   macos-aarch64:
-    runs-on: self-hosted-aarch64-apple-darwin
+    runs-on: macos-14
+    # runs-on: self-hosted-aarch64-apple-darwin
     env:
       HOST_TRIPLET: aarch64-apple-darwin
       XZ_OPT: "-e -T0 -9"
