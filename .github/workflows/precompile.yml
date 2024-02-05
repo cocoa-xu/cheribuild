@@ -14,8 +14,8 @@ permissions:
 
 jobs:
   linux-x86_64:
-    runs-on: ubuntu-latest
-    # runs-on: self-hosted-x86_64-linux-gnu
+    # runs-on: ubuntu-latest
+    runs-on: self-hosted-x86_64-linux-gnu
     env:
       HOST_TRIPLET: x86_64-linux-gnu
       DOCKER_PLATFORM: linux/amd64
