@@ -86,6 +86,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         if: matrix.arch == 'purecap'
         with:
+          tag_name: ${{ github.event.inputs.version }}
+          name: ${{ github.event.inputs.version }}
           files: |
             build/qemu-${{ env.HOST_TRIPLET }}.tar.xz
             build/qemu-${{ env.HOST_TRIPLET }}.tar.xz.sha256
@@ -94,6 +96,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
+          tag_name: ${{ github.event.inputs.version }}
+          name: ${{ github.event.inputs.version }}
           files: |
             build/morello-sdk-${{ matrix.arch }}-${{ env.HOST_TRIPLET }}.tar.xz
             build/morello-sdk-${{ matrix.arch }}-${{ env.HOST_TRIPLET }}.tar.xz.sha256
