@@ -1,0 +1,106 @@
+name: precompile-x86_64-apple-darwin
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_sha:
+        description: 'CheriBSD Commit SHA'
+        required: true
+      version:
+        required: true
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  macos-x86_64:
+    runs-on: self-hosted-x86_64-apple-darwin
+    env:
+      HOST_TRIPLET: x86_64-apple-darwin
+      XZ_OPT: "-e -T0 -9"
+    strategy:
+      fail-fast: false
+      matrix:
+        arch:
+          - purecap
+          - hybrid
+    name: QEMU+MorelloSDK@${{ matrix.arch }} / x86_64-apple-darwin
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+    
+      - name: Install dependencies
+        run: |
+          brew install cmake ninja libarchive git glib gnu-sed automake autoconf coreutils llvm make wget pixman pkg-config xz texinfo mercurial libtool samba socat dtc
+          
+          if [ -f "/usr/local/bin/python3" ]; then
+            /usr/local/bin/python3 -m ensurepip --default-pip
+            /usr/local/bin/python3 -m pip install -U setuptools
+          fi
+          FIRST_PYTHON3="$(which python3)"
+          ${FIRST_PYTHON3} -m ensurepip --default-pip
+          ${FIRST_PYTHON3} -m pip install -U setuptools
+
+      - name: Compile QEMU and Morello SDK
+        run: |
+          ROOT_DIR="$(pwd)"
+          BUILD_DIR="${ROOT_DIR}/build"
+          mkdir -p "${BUILD_DIR}"
+
+          GIT_COMMIT="${{ inputs.commit_sha }}"
+
+          rm -rf cheribuild
+          git clone https://github.com/CTSRD-CHERI/cheribuild.git
+          cd cheribuild
+          git checkout "$GIT_COMMIT"
+
+          if [ "${{ matrix.arch }}" = "hybrid" ]; then
+            python3 ./cheribuild.py --enable-hybrid-targets --shallow-clone --make-jobs "$(sysctl -n hw.ncpu)" "cheribsd-sdk-morello-${{ matrix.arch }}" -f
+          else
+            python3 ./cheribuild.py --shallow-clone --make-jobs "$(sysctl -n hw.ncpu)" "cheribsd-sdk-morello-${{ matrix.arch }}" -f
+          fi
+
+          if [ "${{ matrix.arch }}" = "purecap" ]; then
+            tar -C "${HOME}/cheri/output" -cJf "$(pwd)/qemu-${{ env.HOST_TRIPLET }}.tar.xz" sdk
+            mv "$(pwd)/qemu-${{ env.HOST_TRIPLET }}.tar.xz" "${BUILD_DIR}"
+          fi
+
+          tar -C "${HOME}/cheri/output" -cJf "$(pwd)/morello-sdk-${{ matrix.arch }}-${{ env.HOST_TRIPLET }}.tar.xz" morello-sdk
+          mv "$(pwd)/morello-sdk-${{ matrix.arch }}-${{ env.HOST_TRIPLET }}.tar.xz" "${BUILD_DIR}"
+
+          cd "${BUILD_DIR}"
+          if [ "${{ matrix.arch }}" = "purecap" ]; then
+            sha256sum qemu-${{ env.HOST_TRIPLET }}.tar.xz | tee qemu-${{ env.HOST_TRIPLET }}.tar.xz.sha256
+          fi
+          sha256sum morello-sdk-${{ matrix.arch }}-${{ env.HOST_TRIPLET }}.tar.xz | tee morello-sdk-${{ matrix.arch }}-${{ env.HOST_TRIPLET }}.tar.xz.sha256
+
+          ls -lah "${BUILD_DIR}"
+          rm -rf "${HOME}/cheri/"
+
+      - name: Upload QEMU artifacts
+        uses: softprops/action-gh-release@v1
+        if: matrix.arch == 'purecap'
+        with:
+          files: |
+            build/qemu-${{ env.HOST_TRIPLET }}.tar.xz
+            build/qemu-${{ env.HOST_TRIPLET }}.tar.xz.sha256
+
+      - name: Upload Morello SDK artifacts
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            build/morello-sdk-${{ matrix.arch }}-${{ env.HOST_TRIPLET }}.tar.xz
+            build/morello-sdk-${{ matrix.arch }}-${{ env.HOST_TRIPLET }}.tar.xz.sha256
+
+      - name: Deploy
+        if: github.repository == 'cocoa-xu/cheribuild'
+        env:
+          DEPLOY_CHERIBSD_HOOK_URL: ${{ secrets.DEPLOY_CHERIBSD_HOOK_URL }}
+        run: |
+          curl -sS --max-time 1200 --no-progress-meter "${DEPLOY_CHERIBSD_HOOK_URL}arch=${{ matrix.arch }}&version=${{ inputs.version }}&platform=${{ env.HOST_TRIPLET }}"

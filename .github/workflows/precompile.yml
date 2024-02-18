@@ -132,8 +132,8 @@ jobs:
           curl -sS --max-time 1200 --no-progress-meter "${DEPLOY_CHERIBSD_HOOK_URL}arch=${{ matrix.arch }}&version=${{ github.ref_name }}&platform=${{ env.HOST_TRIPLET }}"
 
   macos-x86_64:
-    runs-on: macos-12
-    # runs-on: self-hosted-x86_64-apple-darwin
+    # runs-on: macos-12
+    runs-on: self-hosted-x86_64-apple-darwin
     env:
       HOST_TRIPLET: x86_64-apple-darwin
       XZ_OPT: "-e -T0 -9"
