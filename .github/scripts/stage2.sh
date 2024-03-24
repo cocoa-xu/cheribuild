@@ -9,7 +9,7 @@ HOST_TRIPLET=$4
 
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
-apt-get install -y sudo git autoconf automake libtool pkg-config clang bison cmake flex \
+apt-get install -y sudo git autoconf automake libtool pkg-config clang bison cmake flex bc \
   mercurial ninja-build samba texinfo time libglib2.0-dev libpixman-1-dev libgmp-dev \
   libarchive-dev libarchive-tools libbz2-dev libattr1-dev libcap-ng-dev libexpat1-dev \
   python3-full python3-pip python3-setuptools python3-wheel python3-dev xz-utils
