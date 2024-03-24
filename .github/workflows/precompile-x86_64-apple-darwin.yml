@@ -39,12 +39,10 @@ jobs:
           brew install cmake ninja libarchive git glib gnu-sed automake autoconf coreutils llvm make wget pixman pkg-config xz texinfo mercurial libtool samba socat dtc
           
           if [ -f "/usr/local/bin/python3" ]; then
-            /usr/local/bin/python3 -m ensurepip --default-pip
-            /usr/local/bin/python3 -m pip install -U setuptools
+            /usr/local/bin/python3 -m pip install -U --break-system-packages setuptools
           fi
           FIRST_PYTHON3="$(which python3)"
-          ${FIRST_PYTHON3} -m ensurepip --default-pip
-          ${FIRST_PYTHON3} -m pip install -U setuptools
+          ${FIRST_PYTHON3} -m pip install -U --break-system-packages setuptools
 
       - name: Compile QEMU and Morello SDK
         run: |
