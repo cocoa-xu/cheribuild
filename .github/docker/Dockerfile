@@ -14,7 +14,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 RUN apt-get update -q=2 && \
     apt-get install -q=2 --yes \
         --no-install-recommends --no-install-suggests \
-        curl locales ca-certificates xz-utils \
+        curl locales ca-certificates xz-utils bc \
         libncursesw6 libpixman-1-0 libglib2.0-0 libtinfo6 libbz2-1.0 \
         libmount1 libselinux1 libffi8 libpcre2-dev libblkid1 \
         libffi8 libpcre2-dev libblkid1 && \
