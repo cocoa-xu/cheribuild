@@ -365,3 +365,70 @@ jobs:
             architecture=${{ matrix.arch }}
             version=${{ github.ref_name }}
             disk_image=${{ matrix.disk_image }}
+
+  build-cloudshell:
+    runs-on: macos-14
+    # needs linux-x86_64 to build the base image
+    # and macos-aarch64 for the qemu binary
+    needs: [linux-x86_64, macos-aarch64]
+    env:
+      HOST_TRIPLET: aarch64-apple-darwin
+      XZ_OPT: "-e -T0 -9"
+      NODE_ENV: production
+    name: cloudshell-cheribuild-purecap
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+    
+      - name: Install dependencies
+        run: |
+          brew install cmake ninja libarchive git glib gnu-sed automake autoconf coreutils llvm make wget pixman pkg-config xz texinfo mercurial libtool samba socat dtc
+          
+          if [ -f "/usr/local/bin/python3" ]; then
+            /usr/local/bin/python3 -m pip install -U --break-system-packages setuptools
+          fi
+          FIRST_PYTHON3="$(which python3)"
+          ${FIRST_PYTHON3} -m pip install -U --break-system-packages setuptools
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate CloudShell image for cheri.run
+        id: cloudshell
+        run: |
+          ROOT_DIR="$(pwd)"
+          BUILD_DIR="${ROOT_DIR}/build"
+          mkdir -p "${BUILD_DIR}"
+
+          git clone --depth=1 https://github.com/shinohara-rin/cloudshell.git
+          cd cloudshell/backend
+
+          npm i
+          node image-manager.js
+
+          IMAGE_FULLNAME="$(find -name 'cheribsd*.img')"
+          IMAGE_NAME=${IMAGE_FULLNAME##./}
+          IMAGE_NAME=${IMAGE_NAME%%.img}
+          IMAGE_TAG=${IMAGE_NAME##cheribsd-morello-purecap-}
+          CLOUDSHELL_IMAGE_NAME="cloudshell"
+          CLOUDSHELL_IMAGE_FULLNAME="${CLOUDSHELL_IMAGE_NAME}.img"
+
+          mv "${IMAGE_FULLNAME}" "${CLOUDSHELL_IMAGE_FULLNAME}"
+          tar -cJf "${CLOUDSHELL_IMAGE_NAME}.img.xz" "${CLOUDSHELL_IMAGE_FULLNAME}"
+          sha256sum "${CLOUDSHELL_IMAGE_NAME}.img.xz" | tee "${CLOUDSHELL_IMAGE_NAME}.img.xz.sha256"
+          mv "${CLOUDSHELL_IMAGE_NAME}.img.xz" "${BUILD_DIR}"
+          mv "${CLOUDSHELL_IMAGE_NAME}.img.xz.sha256" "${BUILD_DIR}"
+
+          ls -lah "${BUILD_DIR}"
+          echo "tag=${IMAGE_TAG}" >> $GITHUB_OUTPUT
+
+      - name: Upload CloudShell image
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.cloudshell.outputs.tag }}
+          name: ${{ steps.cloudshell.outputs.tag }}
+          files: |
+            build/cloudshell.img.xz
+            build/cloudshell.img.xz.sha256

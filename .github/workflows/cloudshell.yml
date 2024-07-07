@@ -54,7 +54,7 @@ jobs:
           IMAGE_NAME=${IMAGE_FULLNAME##./}
           IMAGE_NAME=${IMAGE_NAME%%.img}
           IMAGE_TAG=${IMAGE_NAME##cheribsd-morello-purecap-}
-          CLOUDSHELL_IMAGE_NAME="cloudshell-${IMAGE_TAG}"
+          CLOUDSHELL_IMAGE_NAME="cloudshell"
           CLOUDSHELL_IMAGE_FULLNAME="${CLOUDSHELL_IMAGE_NAME}.img"
 
           mv "${IMAGE_FULLNAME}" "${CLOUDSHELL_IMAGE_FULLNAME}"
@@ -72,5 +72,5 @@ jobs:
           tag_name: ${{ steps.cloudshell.outputs.tag }}
           name: ${{ steps.cloudshell.outputs.tag }}
           files: |
-            build/cloudshell-*.img.xz
-            build/cloudshell-*.img.xz.sha256
+            build/cloudshell.img.xz
+            build/cloudshell.img.xz.sha256
