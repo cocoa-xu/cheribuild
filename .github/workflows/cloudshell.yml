@@ -50,7 +50,7 @@ jobs:
           npm i
           node image-manager.js
 
-          IMAGE_FULLNAME="$(find -name 'cheribsd*.img')"
+          IMAGE_FULLNAME="$(find . -name 'cheribsd*.img')"
           IMAGE_NAME=${IMAGE_FULLNAME##./}
           IMAGE_NAME=${IMAGE_NAME%%.img}
           IMAGE_TAG=${IMAGE_NAME##cheribsd-morello-purecap-}
