@@ -51,7 +51,7 @@ jobs:
           node image-manager.js
 
           IMAGE_FULLNAME="$(find -name 'cheribsd*.img')"
-          IMAGE_NAME=${IMAGE_NAME##./}
+          IMAGE_NAME=${IMAGE_FULLNAME##./}
           IMAGE_NAME=${IMAGE_NAME%%.img}
           IMAGE_TAG=${IMAGE_NAME##cheribsd-morello-purecap-}
           CLOUDSHELL_IMAGE_NAME="cloudshell-${IMAGE_TAG}"
