@@ -78,7 +78,7 @@ jobs:
           curl -sS --max-time 1200 --no-progress-meter "${DEPLOY_CHERIBSD_HOOK_URL}arch=${{ matrix.arch }}&version=${{ github.ref_name }}&platform=${{ env.HOST_TRIPLET }}"
 
   linux-aarch64:
-    runs-on: self-hosted-aarch64-linux-gnu
+    runs-on: ubicloud-standard-4-arm
     env:
       HOST_TRIPLET: aarch64-linux-gnu
       DOCKER_PLATFORM: linux/arm64
