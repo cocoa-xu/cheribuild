@@ -58,10 +58,10 @@ jobs:
           CLOUDSHELL_IMAGE_FULLNAME="${CLOUDSHELL_IMAGE_NAME}.img"
 
           mv "${IMAGE_FULLNAME}" "${CLOUDSHELL_IMAGE_FULLNAME}"
-          tar -cJf "${CLOUDSHELL_IMAGE_NAME}.tar.xz" "${CLOUDSHELL_IMAGE_NAME}"
-          sha256sum "${CLOUDSHELL_IMAGE_NAME}.tar.xz" | tee "${CLOUDSHELL_IMAGE_NAME}.tar.xz.sha256"
-          mv "${CLOUDSHELL_IMAGE_NAME}.tar.xz" "${BUILD_DIR}"
-          mv "${CLOUDSHELL_IMAGE_NAME}.tar.xz.sha256" "${BUILD_DIR}"
+          tar -cJf "${CLOUDSHELL_IMAGE_NAME}.img.xz" "${CLOUDSHELL_IMAGE_FULLNAME}"
+          sha256sum "${CLOUDSHELL_IMAGE_NAME}.img.xz" | tee "${CLOUDSHELL_IMAGE_NAME}.img.xz.sha256"
+          mv "${CLOUDSHELL_IMAGE_NAME}.img.xz" "${BUILD_DIR}"
+          mv "${CLOUDSHELL_IMAGE_NAME}.img.xz.sha256" "${BUILD_DIR}"
 
           ls -lah "${BUILD_DIR}"
           echo "tag=${IMAGE_TAG}" >> $GITHUB_OUTPUT
@@ -72,5 +72,5 @@ jobs:
           tag_name: ${{ steps.cloudshell.outputs.tag }}
           name: ${{ steps.cloudshell.outputs.tag }}
           files: |
-            build/cloudshell-*.tar.xz
-            build/cloudshell-*.tar.xz.sha256
+            build/cloudshell-*.img.xz
+            build/cloudshell-*.img.xz.sha256
